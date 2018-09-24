@@ -18,13 +18,14 @@ export class UsersService {
   getUserByEmail(email: string): Observable<UserModel> {
     let getUser = this.http.get(`${this.dbUrl}:${this.dbPort}/users?email=${email}`).pipe(
       map((data: Response) => {
+        console.log(data.json())
         return data.json()
       })
     )
     console.log(getUser)
     // getUser.pipe(
-    //   map((user: UserModel) => {
-    //     return user[0] ? user[0] : undefined;
+    //   map((user: UserModel[]) => {
+    //     return user.length > 0 ? user[0] : undefined;
     //   })
     // ) 
     return getUser
