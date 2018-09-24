@@ -9,7 +9,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "dbserver": "json-server --watch dataBase/db.json",
-    "dev": "concurrently --kill-others \"npm run dbserver\" \"npm run start\""
+    "dev": "concurrently --kill-others \"npm run start\" \"npm run dbserver\""
   },
   "private": true,
   "dependencies": {
