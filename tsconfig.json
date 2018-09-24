@@ -18,6 +18,8 @@
     ],
     "paths": {
       "@shared/*":["src/app/shared/*"],
+      "@services/*":["src/app/shared/services/*"],
+      "@interfaces/*":["src/app/shared/interfaces/*"],
       "@components/*":["src/app/components/*"],
     }
   }
