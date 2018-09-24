@@ -18,7 +18,7 @@
           </span>
         </span>
     </div>
-    <div class="form-group">
+    <div class="form-group" [ngClass]="{'has-error': form.get('password').invalid && form.get('password').touched}">
         <label for="password">Пароль</label>
         <input
             type="password"
@@ -27,6 +27,15 @@
             placeholder="Пароль"
             formControlName="password"
         >
+        <span class="form-help-text" *ngIf="form.get('password').invalid && form.get('password').touched">
+          <span *ngIf="form.get('password')['errors']['required']">
+            Пароль не может быть пустым.
+          </span>
+          <span *ngIf="form.get('password')['errors']['minlength']">
+            Минимальная длина пароль {{form.get('password')['errors']['minlength']['requiredLength']}} символов.<br>
+            Ввели {{form.get('password')['errors']['minlength']['actualLength']}} символов.
+          </span>
+        </span>
     </div>
     <div class="form-group">
         <button type="submit" class="btn btn-block btn-primary">Войти</button>
