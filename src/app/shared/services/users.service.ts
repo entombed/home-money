@@ -30,4 +30,12 @@ export class UsersService {
     // ) 
     return getUser
   }
+
+  createNewUser(data: UserModel): Observable<UserModel> {
+    return this.http.post(`${this.dbUrl}:${this.dbPort}/users`, data).pipe(
+      map((data: Response) => {
+        return data.json()
+      })
+    )
+  }
 }

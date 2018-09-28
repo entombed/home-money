@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { UsersService } from '@services/users.service';
 import { UserModel } from '@shared/models/user.model';
 import { MessageModel } from '@shared/models/message.model';
@@ -19,19 +19,30 @@ export class LoginComponent implements OnInit {
   constructor(
     private _usersService: UsersService,
     private _authService: AuthService,
-    private _router: Router
+    private _router: Router,
+    private _activatedRoute: ActivatedRoute,
   ) { }
 
   ngOnInit() {
-    this.showMessage('', 'info')
+    this.message = new MessageModel('danger', '');
+    this._activatedRoute.queryParams.subscribe((params: Params) => {
+      if (params['nowCanLogin']) {
+        const message: MessageModel = {
+          type: 'success',
+          text: 'Можете войти в систему',
+        }
+        this.showMessage(message);
+      }
+    })
+
     this.form = new FormGroup({
       'email': new FormControl(null, [Validators.required, Validators.email]),
       'password': new FormControl(null, [Validators.required, Validators.minLength(6)])
     })
   }
 
-  private showMessage(text: string, type: string = 'danger') {
-    this.message = new MessageModel(type, text);
+  private showMessage(message: MessageModel) {
+    this.message = message;
     window.setTimeout(() => {
       this.message.text = '';
     }, 3000)
@@ -43,17 +54,25 @@ export class LoginComponent implements OnInit {
     this._usersService.getUserByEmail(formData.email).subscribe((data: UserModel) => {
       console.log(data)
       let user = data[0] ? data[0] : undefined;
-      if(user) {
-        if(user.password === formData.password) {
+      if (user) {
+        if (user.password === formData.password) {
           this.message.text = '';
           this._authService.login();
           window.localStorage.setItem('user', JSON.stringify(user));
           // this._router.navigate [''];
         } else {
-          this.showMessage('Не правильный пароль');
+          const message: MessageModel = {
+            type: 'danger',
+            text: 'Не правильный пароль',
+          };
+          this.showMessage(message);
         }
       } else {
-        this.showMessage('Пользователя не существует');
+        const message: MessageModel = {
+          type: 'danger',
+          text: 'Пользователя не существует',
+        };
+        this.showMessage(message);
       }
     })
   }
