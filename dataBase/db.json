@@ -11,12 +11,6 @@
       "password": "123456",
       "name": "Qwerty",
       "id": 2
-    },
-    {
-      "email": "mail1@mail.ru",
-      "password": "123456",
-      "name": "Qwerty",
-      "id": 3
     }
   ],
   "bill": {
