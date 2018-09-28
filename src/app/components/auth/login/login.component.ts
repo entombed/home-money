@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import {UsersService} from '@services/users.service';
-import {UserModel} from '@shared/models/user.model';
-import {MessageModel} from '@shared/models/message.model';
+import { Router } from '@angular/router';
+import { UsersService } from '@services/users.service';
+import { UserModel } from '@shared/models/user.model';
+import { MessageModel } from '@shared/models/message.model';
+import { AuthService } from '@services/auth.service'
 
 @Component({
   selector: 'wfm-login',
@@ -16,6 +18,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private _usersService: UsersService,
+    private _authService: AuthService,
+    private _router: Router
   ) { }
 
   ngOnInit() {
@@ -41,12 +45,15 @@ export class LoginComponent implements OnInit {
       let user = data[0] ? data[0] : undefined;
       if(user) {
         if(user.password === formData.password) {
-          
+          this.message.text = '';
+          this._authService.login();
+          window.localStorage.setItem('user', JSON.stringify(user));
+          // this._router.navigate [''];
         } else {
-          this.showMessage('Не правильный пароль')
+          this.showMessage('Не правильный пароль');
         }
       } else {
-        this.showMessage('Пользователя не существует')
+        this.showMessage('Пользователя не существует');
       }
     })
   }
